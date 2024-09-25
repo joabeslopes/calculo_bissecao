@@ -1,6 +1,7 @@
 import math
+import sys
 
-def bissecao(f, a, b, tol=0.01):
+def bissecao(f, a, b, tol=1e-10):
     while (b - a) / 2 > tol:
         c = (a + b) / 2
         if f(c) == 0:
@@ -11,13 +12,39 @@ def bissecao(f, a, b, tol=0.01):
             a = c
     return (a + b) / 2
 
-# funcao
-def func(x):
-    return math.sqrt(5 - x) - 2*x - 1
+def check_intervalos(f):
 
-# Intervalo
-a, b = 1, 2
-erro = 0.01
+    passo = 0.1
+    a = 0.1
+    b = 0.2
 
-raiz = bissecao(func, a, b, erro)
-print(f"A raiz aproximada é: {raiz:.2f}")
+    while f(a) * f(b) > 0:
+        a += passo
+        b += passo
+        if a > 20:
+            print("Não foi possivel encontrar um intervalo automaticamente")
+            exit()
+
+    return a, b
+
+# Entrando com a função e o intervalo
+func_str = input("Digite a função f(x): ")
+a = input("Digite o limite inferior do intervalo (a): ")
+b = input("Digite o limite superior do intervalo (b): ")
+tol = float(input("Digite a precisão desejada: "))
+
+# Transformando a string em função utilizável
+f = lambda x: eval(func_str)
+
+# Verificando se o intervalo foi definido
+if a == b:
+    # Checar o intervalo
+    a, b = check_intervalos(f)
+else:
+    a = float(a)
+    b = float(b)
+
+# Calculando a raiz
+raiz = bissecao(f, a, b, tol)
+
+print(f"A raiz aproximada é: {raiz}")
