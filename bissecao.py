@@ -1,5 +1,4 @@
 import math
-import sys
 
 def bissecao(f, a, b, tol=1e-10):
     while (b - a) / 2 > tol:
